@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { Send } from 'lucide-react';
+import prodSlip from '@/assets/images/prod-slip.jpg';
+import prodKidsClassic from '@/assets/images/prod-kids-classic.jpg';
+import prodMom from '@/assets/images/prod-mom.jpg';
+import prodDad from '@/assets/images/prod-dad.jpg';
+import prodFamily1 from '@/assets/images/prod-family1.jpg';
+import prodFamily2 from '@/assets/images/prod-family2.jpg';
 
 type Category = 'all' | 'baby' | 'kids' | 'mom';
 
@@ -22,7 +28,7 @@ const products: Product[] = [
     categoryLabel: 'Для малышей',
     description: 'Пижама-слип на кнопках, 100% хлопок. Размеры 62-80.',
     price: '5 300 ₽',
-    image: './images/prod-slip.jpg',
+    image: prodSlip,
   },
   {
     id: 2,
@@ -31,7 +37,7 @@ const products: Product[] = [
     categoryLabel: 'Для детей',
     description: 'Двухдетальная пижама: лонгслив + штанишки. Размеры 92-128.',
     price: '5 500 ₽',
-    image: './images/prod-kids-classic.jpg',
+    image: prodKidsClassic,
   },
   {
     id: 3,
@@ -40,7 +46,7 @@ const products: Product[] = [
     categoryLabel: 'Для мам',
     description: 'Индивидуальный пошив по вашим меркам. Любой размер.',
     price: '8 500 ₽',
-    image: './images/prod-mom.jpg',
+    image: prodMom,
   },
   {
     id: 4,
@@ -49,7 +55,7 @@ const products: Product[] = [
     categoryLabel: 'Для пап',
     description: 'Комплект для папы: футболка + штаны. Индивидуальный пошив.',
     price: '8 500 ₽',
-    image: './images/prod-dad.jpg',
+    image: prodDad,
   },
   {
     id: 5,
@@ -58,7 +64,7 @@ const products: Product[] = [
     categoryLabel: 'Family Look',
     description: 'Одинаковые пижамы для мамы и малыша. Комплект.',
     price: '12 500 ₽',
-    image: './images/prod-family1.jpg',
+    image: prodFamily1,
   },
   {
     id: 6,
@@ -67,7 +73,7 @@ const products: Product[] = [
     categoryLabel: 'Family Look',
     description: 'Одинаковые пижамы для папы и ребёнка. Комплект.',
     price: '12 500 ₽',
-    image: '/./images/prod-family2.jpg',
+    image: prodFamily2,
   },
 ];
 
