@@ -30,7 +30,7 @@ export default function AboutSection() {
           <div className="relative">
             <div className="rounded-[20px] overflow-hidden shadow-[0_8px_32px_rgba(202,135,144,0.15)]">
               <img
-                src="/.images/about-sewing.jpg"
+                src="./images/about-sewing.jpg"
                 alt="Ручной пошив пижам ALDIEM"
                 className="w-full h-auto object-cover"
               />
