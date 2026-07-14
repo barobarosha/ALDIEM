@@ -138,7 +138,7 @@ export default function HeroSection() {
         <div className="hero-image relative max-w-[700px] mx-auto">
           <div className="rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(202,135,144,0.15)]">
             <img
-              src="/images/hero-lifestyle.jpg"
+              src="./images/hero-lifestyle.jpg"
               alt="Уютные пижамы ALDIEM"
               className="w-full h-auto object-cover"
             />
