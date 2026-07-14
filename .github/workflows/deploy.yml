@@ -28,8 +28,8 @@ jobs:
       - name: Install deps
         run: |
           cd app
-          npm cache clean --force
-          npm install --legacy-peer-deps 2>&1
+          rm -f package-lock.json
+          npm install 2>&1
           echo "EXIT CODE: $?"
       
       - name: Debug - check node_modules
