@@ -23,7 +23,7 @@ function App() {
 
     return () => {
       clearTimeout(timeout);
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+    ScrollTrigger.getAll().forEach((t: any) => t.kill());
     };
   }, []);
 
