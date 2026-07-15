@@ -18,6 +18,9 @@ export function useScrollAnimation(
       ? el.children
       : el;
 
+    // Сначала делаем видимым
+    gsap.set(targets, { opacity: 1, y: 0, scale: 1 });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: el,
