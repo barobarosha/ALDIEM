@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Send, ChevronDown } from 'lucide-react';
+import heroImage from '@/assets/images/hero-lifestyle.jpg';
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -138,7 +139,7 @@ export default function HeroSection() {
         <div className="hero-image relative max-w-[700px] mx-auto">
           <div className="rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(202,135,144,0.15)]">
             <img
-              src="./images/hero-lifestyle.jpg"
+              src={heroImage}
               alt="Уютные пижамы ALDIEM"
               className="w-full h-auto object-cover"
             />
