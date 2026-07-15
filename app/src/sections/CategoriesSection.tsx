@@ -1,22 +1,25 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import catBaby from '@/assets/images/cat-baby.jpg';
+import catKids from '@/assets/images/cat-kids.jpg';
+import catMom from '@/assets/images/cat-mom.jpg';
 
 const categories = [
   {
     title: 'Для малышей',
     description: 'Размеры 62-80',
-    image: '/images/cat-baby.jpg',
+    image: catBaby,
     bgColor: 'bg-[var(--color-blue)]/10',
   },
   {
     title: 'Для детей',
     description: 'Размеры 92-128',
-    image: '/images/cat-kids.jpg',
+    image: catKids,
     bgColor: 'bg-[var(--color-pink)]/10',
   },
   {
     title: 'Для мам и пап',
     description: 'Индивидуальный пошив',
-    image: '/images/cat-mom.jpg',
+    image: catMom,
     bgColor: 'bg-[var(--color-gray)]/10',
   },
 ];
