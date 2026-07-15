@@ -1,5 +1,6 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { Leaf, Heart, Ruler } from 'lucide-react';
+import aboutSewing from '@/assets/images/about-sewing.jpg';
 
 const features = [
   {
@@ -30,7 +31,7 @@ export default function AboutSection() {
           <div className="relative">
             <div className="rounded-[20px] overflow-hidden shadow-[0_8px_32px_rgba(202,135,144,0.15)]">
               <img
-                src="./images/about-sewing.jpg"
+                src={aboutSewing}
                 alt="Ручной пошив пижам ALDIEM"
                 className="w-full h-auto object-cover"
               />
