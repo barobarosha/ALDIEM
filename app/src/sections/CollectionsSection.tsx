@@ -7,8 +7,10 @@ import prodMom from '@/assets/images/prod-mom.jpg';
 import prodDad from '@/assets/images/prod-dad.jpg';
 import catalogVideo from '@/assets/video/catalog.MP4';
 
+type CollectionType = 'video' | 'image';
+
 interface Collection {
-  type: 'video' | 'image';
+  type: CollectionType;
   src: string;
   title: string;
   subtitle: string;
@@ -61,7 +63,7 @@ export default function CollectionsSection() {
   return (
     <section id="collections" className="bg-white py-16 sm:py-20 lg:py-24">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-        {/* ЗАГОЛОВОК — стиль как в Тканях и Каталоге */}
+        {/* ЗАГОЛОВОК */}
         <div ref={headerRef} className="text-center mb-4">
           <div className="flex items-center justify-center gap-4 mb-6">
             <div className="h-px w-12 sm:w-20 bg-[var(--color-pink)]/30" />
@@ -104,11 +106,7 @@ export default function CollectionsSection() {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 )}
-                
-                {/* Затемнение */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent" />
-                
-                {/* ТЕКСТ НА КАРТИНКЕ */}
                 <div className="absolute top-6 left-6 right-6 z-10">
                   <h3 className="font-display text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-white leading-tight mb-2 drop-shadow-lg">
                     {item.title}
@@ -121,7 +119,7 @@ export default function CollectionsSection() {
             ))}
           </div>
 
-          {/* СТРЕЛКИ — стиль как в Тканях и Каталоге */}
+          {/* СТРЕЛКИ */}
           <button
             onClick={() => scroll('left')}
             className="absolute left-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center text-[var(--color-dark)] hover:text-[var(--color-pink)] hover:shadow-xl transition-all duration-300 z-10"

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { Truck, CreditCard, ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
 
