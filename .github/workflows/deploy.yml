@@ -19,21 +19,12 @@ jobs:
         with:
           node-version: '20'
       
-      - name: Debug - list files
-        run: ls -la ./app/
-      
-      - name: Debug - check package.json
-        run: cat ./app/package.json | head -5
-      
-      - name: Install deps
+      - name: Clean install dependencies
         run: |
           cd app
-          rm -f package-lock.json
-          npm install 2>&1
-          echo "EXIT CODE: $?"
-      
-      - name: Debug - check node_modules
-        run: ls ./app/node_modules/ | head -10
+          rm -rf node_modules package-lock.json
+          npm install --no-optional
+          npm install @rollup/rollup-linux-x64-gnu --save-dev
       
       - name: Build
         run: cd app && npm run build
