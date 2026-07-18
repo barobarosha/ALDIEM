@@ -1,10 +1,11 @@
-import { Send } from 'lucide-react';
+import { Send, Instagram } from 'lucide-react';
 
 const navLinks = [
+  { label: 'Коллекции', href: '#collections' },
   { label: 'Каталог', href: '#catalog' },
+  { label: 'Ткани', href: '#fabrics' },
   { label: 'О нас', href: '#about' },
-  { label: 'Доставка', href: '#delivery' },
-  { label: 'Отзывы', href: '#reviews' },
+  { label: 'Доставка', href: '#delivery-reviews' },
   { label: 'Контакты', href: '#contacts' },
 ];
 
@@ -46,7 +47,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5">
               {navLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <a
                     href={link.href}
                     onClick={(e) => handleClick(e, link.href)}
@@ -101,6 +102,15 @@ export default function Footer() {
                 className="flex items-center gap-2 font-body text-sm text-white/80 hover:text-[var(--color-pink)] transition-colors duration-200"
               >
                 <Send className="w-4 h-4" />
+                @aldiem_ru
+              </a>
+              <a
+                href="https://instagram.com/aldiem_ru"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 font-body text-sm text-white/80 hover:text-[var(--color-pink)] transition-colors duration-200"
+              >
+                <Instagram className="w-4 h-4" />
                 @aldiem_ru
               </a>
             </div>

@@ -1,150 +1,89 @@
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { Send, ChevronDown } from 'lucide-react';
-import heroImage from '@/assets/images/hero-lifestyle.jpg';
+import { useState, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import prodSlip from '@/assets/images/prod-slip.jpg';
+import prodKidsClassic from '@/assets/images/prod-kids-classic.jpg';
+import prodMom from '@/assets/images/prod-mom.jpg';
+import prodDad from '@/assets/images/prod-dad.jpg';
+import prodFamily1 from '@/assets/images/prod-family1.jpg';
+import prodFamily2 from '@/assets/images/prod-family2.jpg';
+
+const slides = [
+  { image: prodSlip, alt: 'Слип для малышей' },
+  { image: prodKidsClassic, alt: 'Классическая пижама' },
+  { image: prodMom, alt: 'Пижама для мамы' },
+  { image: prodDad, alt: 'Пижама для папы' },
+  { image: prodFamily1, alt: 'Family Look' },
+  { image: prodFamily2, alt: 'Family Look' },
+];
 
 export default function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.3 });
-      tl.from('.hero-title', {
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        ease: 'power3.out',
-      })
-        .from(
-          '.hero-subtitle',
-          {
-            opacity: 0,
-            y: 30,
-            duration: 0.7,
-            ease: 'power3.out',
-          },
-          '-=0.4'
-        )
-        .from(
-          '.hero-buttons',
-          {
-            opacity: 0,
-            y: 20,
-            duration: 0.6,
-            ease: 'power3.out',
-          },
-          '-=0.3'
-        )
-        .from(
-          '.hero-image',
-          {
-            opacity: 0,
-            y: 40,
-            scale: 0.97,
-            duration: 0.8,
-            ease: 'power3.out',
-          },
-          '-=0.3'
-        );
-    }, containerRef);
-
-    return () => ctx.revert();
+  const next = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % slides.length);
   }, []);
 
-  return (
-    <section
-      ref={containerRef}
-      className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-[72px]"
-      style={{
-        background: 'linear-gradient(135deg, var(--color-beige) 0%, var(--color-cream) 100%)',
-      }}
-    >
-      {/* Floating decorations */}
-      <svg
-        className="absolute top-[15%] left-[8%] w-16 h-16 sm:w-24 sm:h-24 text-[var(--color-blue)] opacity-20 animate-float"
-        viewBox="0 0 100 100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <path d="M20,50 Q30,20 50,50 T80,50" strokeLinecap="round" />
-        <path d="M30,60 Q40,30 60,60 T90,60" strokeLinecap="round" />
-      </svg>
-      <svg
-        className="absolute top-[25%] right-[10%] w-12 h-12 sm:w-20 sm:h-20 text-[var(--color-pink)] opacity-15 animate-float-delayed"
-        viewBox="0 0 100 100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <path d="M20,50 Q35,15 55,45 T85,50" strokeLinecap="round" />
-        <path d="M15,65 Q30,35 50,65 T80,65" strokeLinecap="round" />
-      </svg>
-      <svg
-        className="absolute bottom-[20%] left-[15%] w-10 h-10 sm:w-16 sm:h-16 text-[var(--color-blue)] opacity-15 animate-float-slow"
-        viewBox="0 0 100 100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <path d="M25,45 Q40,20 60,45 T90,45" strokeLinecap="round" />
-      </svg>
-      <svg
-        className="absolute bottom-[30%] right-[8%] w-14 h-14 sm:w-18 sm:h-18 text-[var(--color-pink)] opacity-15 animate-float"
-        viewBox="0 0 100 100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <path d="M15,50 Q30,25 50,50 T85,50" strokeLinecap="round" />
-      </svg>
+  const prev = useCallback(() => {
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  }, []);
 
-      <div ref={contentRef} className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <h1 className="hero-title font-display text-[clamp(2.5rem,8vw,5rem)] font-semibold text-[var(--color-dark)] leading-tight mb-6">
+  useEffect(() => {
+    const timer = setInterval(next, 4000);
+    return () => clearInterval(timer);
+  }, [next]);
+
+  return (
+    <section className="relative h-screen w-full overflow-hidden">
+      {/* Слайды — смещены вниз на высоту шапки */}
+      <div className="absolute top-[72px] left-0 right-0 bottom-0">
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === current ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img src={slide.image} alt={slide.alt} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/30" />
+          </div>
+        ))}
+      </div>
+
+      {/* Текст поверх — ровно по центру видимой области */}
+      <div className="absolute top-[72px] left-0 right-0 bottom-0 flex flex-col items-center justify-center z-10 text-center px-4">
+        <h1 className="font-display text-[clamp(2.5rem,8vw,5rem)] font-semibold text-white leading-tight mb-4 drop-shadow-lg">
           Уютные пижамы
           <br />
-          <span className="text-[var(--color-pink)]">для всей семьи</span>
+          <span className="text-white/90">для всей семьи</span>
         </h1>
-
-        <p className="hero-subtitle font-body text-[clamp(1rem,2.5vw,1.25rem)] text-[var(--color-dark-muted)] max-w-[560px] mx-auto mb-8 leading-relaxed">
-          Ручной пошив из натуральных тканей. Для малышей, детей и мам.
-          Индивидуальные мерки — без доплаты.
+        <p className="font-body text-[clamp(1rem,2.5vw,1.25rem)] text-white/90 max-w-[600px] mb-8 drop-shadow-md">
+          Каждая пижама — ручная работа, сделана с любовью нашими швейями
         </p>
+        <a
+          href="#catalog"
+          onClick={(e) => {
+            e.preventDefault();
+            document.querySelector('#catalog')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-[var(--color-dark)] font-body font-semibold hover:bg-white/90 transition-all duration-300"
+        >
+          Смотреть каталог
+        </a>
+      </div>
 
-        <div className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          <a
-            href="#catalog"
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector('#catalog')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[var(--color-pink)] text-white font-body font-semibold shadow-[0_4px_16px_rgba(202,135,144,0.3)] hover:shadow-[0_6px_20px_rgba(202,135,144,0.4)] hover:-translate-y-0.5 transition-all duration-300"
-          >
-            <ChevronDown className="w-5 h-5" />
-            Смотреть каталог
-          </a>
-          <a
-            href="https://t.me/dilishik"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border-2 border-[var(--color-pink)] text-[var(--color-pink)] font-body font-semibold hover:bg-[var(--color-pink)] hover:text-white transition-all duration-300"
-          >
-            <Send className="w-5 h-5" />
-            Написать в Telegram
-          </a>
-        </div>
+      {/* Стрелки */}
+      <button onClick={prev} className="absolute left-4 top-[calc(50%+36px)] -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-all">
+        <ChevronLeft className="w-6 h-6" />
+      </button>
+      <button onClick={next} className="absolute right-4 top-[calc(50%+36px)] -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-all">
+        <ChevronRight className="w-6 h-6" />
+      </button>
 
-        {/* Hero image */}
-        <div className="hero-image relative max-w-[700px] mx-auto">
-          <div className="rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(202,135,144,0.15)]">
-            <img
-              src={heroImage}
-              alt="Уютные пижамы ALDIEM"
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        </div>
+      {/* Точки */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {slides.map((_, index) => (
+          <button key={index} onClick={() => setCurrent(index)} className={`h-2 rounded-full transition-all ${index === current ? 'bg-white w-6' : 'bg-white/50 w-2'}`} />
+        ))}
       </div>
     </section>
   );

@@ -133,3 +133,11 @@ html {
   animation: float 12s ease-in-out infinite;
   animation-delay: 4s;
 }
+/* Скрыть скроллбар в горизонтальном скролле тканей */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

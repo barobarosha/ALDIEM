@@ -4,41 +4,36 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/sections/HeroSection';
-import CategoriesSection from '@/sections/CategoriesSection';
+import CollectionsSection from '@/sections/CollectionsSection';
 import CatalogSection from '@/sections/CatalogSection';
+import FabricsSection from '@/sections/FabricsSection';
 import AboutSection from '@/sections/AboutSection';
-import WhyChooseSection from '@/sections/WhyChooseSection';
-import DeliverySection from '@/sections/DeliverySection';
-import ReviewsSection from '@/sections/ReviewsSection';
-import ContactCTASection from '@/sections/ContactCTASection';
+import DeliveryReviewsSection from '@/sections/DeliveryReviewsSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   useEffect(() => {
-    // Refresh ScrollTrigger after all content is loaded
     const timeout = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 500);
 
     return () => {
       clearTimeout(timeout);
-    ScrollTrigger.getAll().forEach((t: any) => t.kill());
+      ScrollTrigger.getAll().forEach((t: any) => t.kill());
     };
   }, []);
 
   return (
-    <div className="min-h-screen bg-[var(--color-beige)]">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <main>
         <HeroSection />
-        <CategoriesSection />
+        <CollectionsSection />
         <CatalogSection />
+        <FabricsSection />
         <AboutSection />
-        <WhyChooseSection />
-        <DeliverySection />
-        <ReviewsSection />
-        <ContactCTASection />
+        <DeliveryReviewsSection />
       </main>
       <Footer />
     </div>
