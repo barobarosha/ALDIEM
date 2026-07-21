@@ -1,19 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import prodSlip from '@/assets/images/prod-slip.jpg';
-import prodKidsClassic from '@/assets/images/prod-kids-classic.jpg';
-import prodMom from '@/assets/images/prod-mom.jpg';
-import prodDad from '@/assets/images/prod-dad.jpg';
-import prodFamily1 from '@/assets/images/prod-family1.jpg';
-import prodFamily2 from '@/assets/images/prod-family2.jpg';
+import hero1 from '@/assets/images/hero1.JPG';
+import hero2 from '@/assets/images/hero2.JPG';
+import hero3 from '@/assets/images/hero3.JPG';
+import hero4 from '@/assets/images/hero4.JPG';
+import hero5 from '@/assets/images/hero5.JPG';
 
 const slides = [
-  { image: prodSlip, alt: 'Слип для малышей' },
-  { image: prodKidsClassic, alt: 'Классическая пижама' },
-  { image: prodMom, alt: 'Пижама для мамы' },
-  { image: prodDad, alt: 'Пижама для папы' },
-  { image: prodFamily1, alt: 'Family Look' },
-  { image: prodFamily2, alt: 'Family Look' },
+  { image: hero1, alt: 'Пижама ALDIEM 1' },
+  { image: hero2, alt: 'Пижама ALDIEM 2' },
+  { image: hero3, alt: 'Пижама ALDIEM 3' },
+  { image: hero4, alt: 'Пижама ALDIEM 4' },
+  { image: hero5, alt: 'Пижама ALDIEM 5' },
 ];
 
 export default function HeroSection() {

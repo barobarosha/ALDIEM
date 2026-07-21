@@ -1,15 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import catalogBg from '@/assets/images/catalog.jpg';
-import prodSlip from '@/assets/images/prod-slip.jpg';
-import prodKidsClassic from '@/assets/images/prod-kids-classic.jpg';
-import prodMom from '@/assets/images/prod-mom.jpg';
-import prodDad from '@/assets/images/prod-dad.jpg';
-import prodFamily1 from '@/assets/images/prod-family1.jpg';
-import prodFamily2 from '@/assets/images/prod-family2.jpg';
 
-type Category = 'all' | 'baby' | 'kids' | 'mom' | 'in-stock' | 'sale';
+type Category = 'all' | 'baby' | 'kids' | 'mom' | 'dad' | 'in-stock' | 'sale' | 'robes' | 'bedding';
 
 type StockStatus = 'in-stock' | 'pre-order';
 
@@ -20,20 +14,8 @@ interface Product {
   stockStatus: StockStatus;
   price: string;
   image: string;
+  description: string;
 }
-
-const products: Product[] = [
-  { id: 1, name: 'Слип для малышей', category: 'baby', stockStatus: 'pre-order', price: '5 300 ₽', image: prodSlip },
-  { id: 2, name: 'Классическая пижама', category: 'kids', stockStatus: 'pre-order', price: '5 500 ₽', image: prodKidsClassic },
-  { id: 3, name: 'Пижама для мамы', category: 'mom', stockStatus: 'pre-order', price: '8 500 ₽', image: prodMom },
-  { id: 4, name: 'Пижама для папы', category: 'mom', stockStatus: 'pre-order', price: '8 500 ₽', image: prodDad },
-  { id: 5, name: 'Family Look', category: 'baby', stockStatus: 'pre-order', price: '12 500 ₽', image: prodFamily1 },
-  { id: 6, name: 'Family Look', category: 'kids', stockStatus: 'pre-order', price: '12 500 ₽', image: prodFamily2 },
-  { id: 7, name: 'Слип слим-фит', category: 'in-stock', stockStatus: 'in-stock', price: '4 900 ₽', image: prodSlip },
-  { id: 8, name: 'Пижама Звёздочка', category: 'in-stock', stockStatus: 'in-stock', price: '5 200 ₽', image: prodKidsClassic },
-  { id: 9, name: 'Слип классический', category: 'sale', stockStatus: 'in-stock', price: '3 500 ₽', image: prodSlip },
-  { id: 10, name: 'Пижама Месяц', category: 'sale', stockStatus: 'in-stock', price: '3 800 ₽', image: prodKidsClassic },
-];
 
 const filters: { key: Category; label: string }[] = [
   { key: 'sale', label: 'Скидки' },
@@ -42,17 +24,87 @@ const filters: { key: Category; label: string }[] = [
   { key: 'baby', label: 'Малыши' },
   { key: 'kids', label: 'Дети' },
   { key: 'mom', label: 'Мамы' },
+  { key: 'dad', label: 'Папы' },
+  { key: 'robes', label: 'Халаты' },
+  { key: 'bedding', label: 'Постельное бельё' },
 ];
+
+// Преобразование Google Drive ссылки в thumbnail
+function convertDriveLink(url: string): string {
+  if (!url || url === 'undefined' || url === 'null') return '';
+  
+  // Если уже thumbnail — оставляем
+  if (url.includes('thumbnail?id=')) return url;
+  
+  // Извлекаем ID из разных форматов Google Drive
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match && match[1]) {
+    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+  }
+  
+  // Если уже прямая ссылка на изображение
+  if (url.startsWith('http') && (url.includes('.jpg') || url.includes('.jpeg') || url.includes('.png'))) {
+    return url;
+  }
+  
+  return url;
+}
+
+// URL Google Sheets CSV
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1JTHJw5EOgCRy5lHyCGuoclnvdenOREH1lWpejbMiKs8/gviz/tq?tqx=out:csv&sheet=Каталог';
 
 export default function CatalogSection() {
   const [activeFilter, setActiveFilter] = useState<Category>('sale');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const headerRef = useScrollAnimation('fade-up', true);
 
-  const filtered =
-    activeFilter === 'all'
-      ? products
-      : products.filter((p) => p.category === activeFilter);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(SHEET_URL);
+        const csvText = await response.text();
+        const rows = csvText.split('\n').slice(1);
+        
+        const parsedProducts: Product[] = [];
+        
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+          if (!row.trim() || !row.includes('"')) continue;
+          
+          const cols = row.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+          
+          // Пропускаем пустые строки и заголовки
+          if (!cols[0] || !cols[1] || cols[1] === 'name' || cols[0] === 'id') {
+            continue;
+          }
+          
+          parsedProducts.push({
+            id: parseInt(cols[0]) || i + 1,
+            name: cols[1],
+            category: (cols[2] as Category) || 'all',
+            price: cols[3] ? `${cols[3]} ₽` : '',
+            image: convertDriveLink(cols[4] || ''),
+            stockStatus: (cols[5] as StockStatus) || 'pre-order',
+            description: cols[6] || '',
+          });
+        }
+        
+        setProducts(parsedProducts);
+      } catch (error) {
+        console.error('Error loading products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const filtered = activeFilter === 'all' 
+    ? products 
+    : products.filter((p) => p.category === activeFilter);
 
   const scroll = (direction: 'left' | 'right') => {
     const el = scrollRef.current;
@@ -70,6 +122,16 @@ export default function CatalogSection() {
       ? 'bg-[var(--color-beige)] text-[var(--color-dark)]'
       : 'bg-[var(--color-gray)] text-white';
   };
+
+  if (loading) {
+    return (
+      <section id="catalog" className="relative">
+        <div className="flex items-center justify-center h-64">
+          <div className="w-8 h-8 border-2 border-[var(--color-pink)] border-t-transparent rounded-full animate-spin" />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="catalog" className="relative">
@@ -133,9 +195,9 @@ export default function CatalogSection() {
               className="flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {filtered.map((product) => (
+              {filtered.map((product, index) => (
                 <div
-                  key={product.id}
+                  key={`product-${product.id}-${index}`}
                   className="flex-shrink-0 w-[calc(50%-10px)] sm:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)] snap-start cursor-pointer group"
                 >
                   <div className="relative aspect-[2/3] overflow-hidden bg-gray-100 rounded-xl mb-3">
@@ -144,13 +206,24 @@ export default function CatalogSection() {
                       {getStockLabel(product.stockStatus)}
                     </div>
                     
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+                    {/* КАРТИНКА */}
+                    {product.image ? (
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) => {
+                          console.error('Image failed:', product.image);
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                        <span className="text-gray-400 text-xs">Нет фото</span>
+                      </div>
+                    )}
                     
-                    {/* КНОПКА ЗАКАЗАТЬ ПРИ НАВЕДЕНИИ */}
+                    {/* КНОПКА ЗАКАЗАТЬ */}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-end justify-center pb-6">
                       <a
                         href="https://t.me/dilishik"

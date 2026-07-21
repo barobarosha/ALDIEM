@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
@@ -13,78 +13,6 @@ interface Fabric {
   image: string;
 }
 
-import prodSlip from '@/assets/images/prod-slip.jpg';
-import prodKidsClassic from '@/assets/images/prod-kids-classic.jpg';
-import prodMom from '@/assets/images/prod-mom.jpg';
-import prodDad from '@/assets/images/prod-dad.jpg';
-
-const fabrics: Fabric[] = [
-  {
-    id: 1,
-    name: 'Пудровый розовый',
-    type: 'muslin',
-    typeLabel: 'Муслин',
-    description: 'Нежный оттенок для малышей и мам. Мягкий, дышащий.',
-    image: prodSlip,
-  },
-  {
-    id: 2,
-    name: 'Мятный',
-    type: 'muslin',
-    typeLabel: 'Муслин',
-    description: 'Свежий цвет, идеален для летних пижам.',
-    image: prodKidsClassic,
-  },
-  {
-    id: 3,
-    name: 'Кремовый',
-    type: 'satin',
-    typeLabel: 'Сатин',
-    description: 'Классический бежевый, универсальный.',
-    image: prodMom,
-  },
-  {
-    id: 4,
-    name: 'Лавандовый',
-    type: 'satin',
-    typeLabel: 'Сатин',
-    description: 'Спокойный фиолетовый для детских снов.',
-    image: prodDad,
-  },
-  {
-    id: 5,
-    name: 'Тёмно-синий',
-    type: 'flannel',
-    typeLabel: 'Фланель',
-    description: 'Тёплый, плотный, для зимних пижам.',
-    image: prodSlip,
-  },
-  {
-    id: 6,
-    name: 'Клетка красная',
-    type: 'flannel',
-    typeLabel: 'Фланель',
-    description: 'Классическая клетка, Family Look.',
-    image: prodKidsClassic,
-  },
-  {
-    id: 7,
-    name: 'Белый',
-    type: 'cotton',
-    typeLabel: 'Хлопок',
-    description: 'Чистый белый, основа любой пижамы.',
-    image: prodMom,
-  },
-  {
-    id: 8,
-    name: 'Серый меланж',
-    type: 'cotton',
-    typeLabel: 'Хлопок',
-    description: 'Мягкий серый, практичный и стильный.',
-    image: prodDad,
-  },
-];
-
 const filters: { key: FabricType; label: string }[] = [
   { key: 'all', label: 'Все' },
   { key: 'muslin', label: 'Муслин' },
@@ -93,15 +21,81 @@ const filters: { key: FabricType; label: string }[] = [
   { key: 'cotton', label: 'Хлопок' },
 ];
 
+// Преобразование Google Drive ссылки в thumbnail
+function convertDriveLink(url: string): string {
+  if (!url || url === 'undefined' || url === 'null') return '';
+  
+  // Если уже thumbnail — оставляем
+  if (url.includes('thumbnail?id=')) return url;
+  
+  // Извлекаем ID из разных форматов Google Drive
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match && match[1]) {
+    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+  }
+  
+  // Если уже прямая ссылка на изображение
+  if (url.startsWith('http') && (url.includes('.jpg') || url.includes('.jpeg') || url.includes('.png'))) {
+    return url;
+  }
+  
+  return url;
+}
+
+// URL Google Sheets CSV
+const FABRICS_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1JTHJw5EOgCRy5lHyCGuoclnvdenOREH1lWpejbMiKs8/gviz/tq?tqx=out:csv&sheet=Ткани';
+
 export default function FabricsSection() {
   const [activeFilter, setActiveFilter] = useState<FabricType>('all');
+  const [fabrics, setFabrics] = useState<Fabric[]>([]);
+  const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const headerRef = useScrollAnimation('fade-up', true);
 
-  const filtered =
-    activeFilter === 'all'
-      ? fabrics
-      : fabrics.filter((f) => f.type === activeFilter);
+  useEffect(() => {
+    const fetchFabrics = async () => {
+      try {
+        const response = await fetch(FABRICS_SHEET_URL);
+        const csvText = await response.text();
+        const rows = csvText.split('\n').slice(1);
+        
+        const parsedFabrics: Fabric[] = [];
+        
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+          if (!row.trim() || !row.includes('"')) continue;
+          
+          const cols = row.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+          
+          // Пропускаем пустые строки и заголовки
+          if (!cols[0] || !cols[1] || cols[1] === 'name' || cols[0] === 'id') {
+            continue;
+          }
+          
+          parsedFabrics.push({
+            id: parseInt(cols[0]) || i + 1,
+            name: cols[1],
+            type: (cols[2] as FabricType) || 'muslin',
+            typeLabel: cols[3] || '',
+            description: cols[4] || '',
+            image: convertDriveLink(cols[5] || ''),
+          });
+        }
+        
+        setFabrics(parsedFabrics);
+      } catch (error) {
+        console.error('Error loading fabrics:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFabrics();
+  }, []);
+
+  const filtered = activeFilter === 'all'
+    ? fabrics
+    : fabrics.filter((f) => f.type === activeFilter);
 
   const scroll = (direction: 'left' | 'right') => {
     const el = scrollRef.current;
@@ -109,6 +103,16 @@ export default function FabricsSection() {
     const cardWidth = el.children[0]?.clientWidth || 400;
     el.scrollBy({ left: direction === 'left' ? -(cardWidth + 16) : cardWidth + 16, behavior: 'smooth' });
   };
+
+  if (loading) {
+    return (
+      <section id="fabrics" className="bg-[var(--color-beige)] pt-0 pb-16 sm:pb-20 lg:pb-24">
+        <div className="flex items-center justify-center h-64">
+          <div className="w-8 h-8 border-2 border-[var(--color-pink)] border-t-transparent rounded-full animate-spin" />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="fabrics" className="bg-[var(--color-beige)] pt-0 pb-16 sm:pb-20 lg:pb-24">
@@ -129,7 +133,7 @@ export default function FabricsSection() {
           Натуральные материалы для комфортного сна всей семьи
         </p>
 
-        {/* СТАТИЧНЫЙ ТЕКСТ — призыв к действию */}
+        {/* СТАТИЧНЫЙ ТЕКСТ */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-3 px-6 py-3 bg-white rounded-full shadow-[0_2px_12px_rgba(202,135,144,0.15)]">
             <div className="w-2 h-2 rounded-full bg-[var(--color-pink)] animate-pulse" />
@@ -169,19 +173,22 @@ export default function FabricsSection() {
               msOverflowStyle: 'none',
             }}
           >
-            {filtered.map((fabric) => (
+            {filtered.map((fabric, index) => (
               <div
-                key={fabric.id}
+                key={`fabric-${fabric.id}-${index}`}
                 className="flex-shrink-0 w-[85vw] sm:w-[45vw] lg:w-[32vw] xl:w-[28vw] aspect-[3/4] snap-start relative group overflow-hidden rounded-2xl cursor-pointer"
               >
                 <img
                   src={fabric.image}
                   alt={fabric.name}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  onError={(e) => {
+                    console.error('Image failed:', fabric.image);
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
                 
-                {/* Текст поверх */}
                 <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
                   <span className="font-body text-xs uppercase tracking-[0.2em] text-white/50 mb-2">
                     {fabric.typeLabel}
@@ -193,7 +200,6 @@ export default function FabricsSection() {
                     {fabric.description}
                   </p>
                   
-                  {/* КНОПКА ЗАКАЗАТЬ */}
                   <a
                     href="https://t.me/dilishik"
                     target="_blank"

@@ -5,6 +5,7 @@ import prodSlip from '@/assets/images/prod-slip.jpg';
 import prodKidsClassic from '@/assets/images/prod-kids-classic.jpg';
 import prodMom from '@/assets/images/prod-mom.jpg';
 import prodDad from '@/assets/images/prod-dad.jpg';
+import prodFamily1 from '@/assets/images/prod-family1.jpg';
 import catalogVideo from '@/assets/video/catalog.MP4';
 
 type CollectionType = 'video' | 'image';
@@ -40,6 +41,12 @@ const collections: Collection[] = [
     src: prodMom,
     title: 'Пижамы для мам и пап',
     subtitle: 'по индивидуальным меркам',
+  },
+  {
+    type: 'image',
+    src: prodFamily1,
+    title: 'Халаты',
+    subtitle: 'махровые и шёлковые для всей семьи',
   },
   {
     type: 'image',
