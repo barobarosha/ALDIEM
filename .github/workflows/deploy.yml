@@ -19,12 +19,10 @@ jobs:
         with:
           node-version: '20'
       
-      - name: Clean install dependencies
+      - name: Install dependencies
         run: |
           cd app
-          rm -rf node_modules package-lock.json
-          npm install --no-optional
-          npm install @rollup/rollup-linux-x64-gnu --save-dev
+          npm install --legacy-peer-deps
       
       - name: Build
         run: cd app && npm run build
