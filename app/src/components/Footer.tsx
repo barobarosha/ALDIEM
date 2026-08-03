@@ -117,10 +117,43 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Политики и оферта — обязательно по закону РФ */}
+        <div className="border-t border-white/10 pt-6 mb-6">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-center">
+            <a
+              href="#"
+              className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
+            >
+              Политика конфиденциальности
+            </a>
+            <a
+              href="#"
+              className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
+            >
+              Публичная оферта
+            </a>
+            <a
+              href="#"
+              className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
+            >
+              Пользовательское соглашение
+            </a>
+            <a
+              href="#"
+              className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
+            >
+              Доставка и возврат
+            </a>
+          </div>
+        </div>
+
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-6 text-center">
           <p className="font-body text-xs text-[var(--color-gray)]">
             &copy; 2025 ALDIEM. Все права защищены.
+          </p>
+          <p className="font-body text-xs text-[var(--color-gray)]/60 mt-2">
+            ИП [ФИО] | ИНН: [номер] | ОГРНИП: [номер]
           </p>
         </div>
       </div>
