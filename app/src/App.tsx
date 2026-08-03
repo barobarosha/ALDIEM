@@ -8,6 +8,7 @@ import CollectionsSection from '@/sections/CollectionsSection';
 import CatalogSection from '@/sections/CatalogSection';
 import FabricsSection from '@/sections/FabricsSection';
 import AboutSection from '@/sections/AboutSection';
+import TelegramCTA from '@/sections/TelegramCTA';
 import DeliveryReviewsSection from '@/sections/DeliveryReviewsSection';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -33,6 +34,7 @@ function App() {
         <CatalogSection />
         <FabricsSection />
         <AboutSection />
+        <TelegramCTA />
         <DeliveryReviewsSection />
       </main>
       <Footer />
