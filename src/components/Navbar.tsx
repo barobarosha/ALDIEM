@@ -7,7 +7,6 @@ const navLinks = [
   { label: 'Ткани', href: '#fabrics' },
   { label: 'О нас', href: '#about' },
   { label: 'Доставка', href: '#delivery-reviews' },
-  { label: 'Контакты', href: '#contacts' },
 ];
 
 export default function Navbar() {

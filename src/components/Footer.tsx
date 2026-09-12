@@ -1,4 +1,4 @@
-import { Send, Instagram } from 'lucide-react';
+import { Send, Instagram, Phone } from 'lucide-react';
 
 const navLinks = [
   { label: 'Коллекции', href: '#collections' },
@@ -6,7 +6,6 @@ const navLinks = [
   { label: 'Ткани', href: '#fabrics' },
   { label: 'О нас', href: '#about' },
   { label: 'Доставка', href: '#delivery-reviews' },
-  { label: 'Контакты', href: '#contacts' },
 ];
 
 const catalogLinks = [
@@ -87,6 +86,13 @@ export default function Footer() {
             </h4>
             <div className="space-y-3">
               <a
+                href="tel:+79251893939"
+                className="flex items-center gap-2 font-body text-sm text-white/80 hover:text-[var(--color-pink)] transition-colors duration-200"
+              >
+                <Phone className="w-4 h-4" />
+                +7 925 189 3939
+              </a>
+              <a
                 href="https://t.me/dilishik"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -121,25 +127,25 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-6 mb-6">
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-center">
             <a
-              href="#"
+              href="/ALDIEM/privacy.html"
               className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
             >
               Политика конфиденциальности
             </a>
             <a
-              href="#"
+              href="/ALDIEM/offer.html"
               className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
             >
               Публичная оферта
             </a>
             <a
-              href="#"
+              href="/ALDIEM/consent.html"
               className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
             >
-              Пользовательское соглашение
+              Согласие на обработку данных
             </a>
             <a
-              href="#"
+              href="/ALDIEM/delivery-return.html"
               className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
             >
               Доставка и возврат
@@ -150,10 +156,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-6 text-center">
           <p className="font-body text-xs text-[var(--color-gray)]">
-            &copy; 2025 ALDIEM. Все права защищены.
-          </p>
-          <p className="font-body text-xs text-[var(--color-gray)]/60 mt-2">
-            ИП [ФИО] | ИНН: [номер] | ОГРНИП: [номер]
+            &copy; 2026 ALDIEM. Все права защищены.
           </p>
           <a
             href="https://baroshacode.ru/"

@@ -12,7 +12,7 @@ type StockStatus = 'in-stock' | 'pre-order';
 interface Product {
   id: number;
   name: string;
-  category: Category;
+  categories: Category[];
   stockStatus: StockStatus;
   price: string;
   oldPrice: string;
@@ -107,7 +107,10 @@ export default function CatalogSection() {
           parsedProducts.push({
             id: parseInt(cols[0]) || i + 1,
             name: cols[1],
-            category: (cols[2] as Category) || 'all',
+            categories: (cols[2] || 'all')
+              .split(/[,;]+/)
+              .map((s) => s.trim().toLowerCase() as Category)
+              .filter((s) => s) || ['all'],
             price: cols[3] ? `${cols[3]} ₽` : '',
             oldPrice: cols[4] ? `${cols[4]} ₽` : '',
             image: convertDriveLink(cols[5] || ''),
@@ -168,7 +171,7 @@ export default function CatalogSection() {
   const hasAdvancedFilters = sizeFilter || genderFilter || collectionFilter || fabricFilter;
 
   const filtered = products.filter(p => {
-    if (activeFilter !== 'all' && p.category !== activeFilter) return false;
+    if (activeFilter !== 'all' && !p.categories.includes(activeFilter)) return false;
     if (sizeFilter && !p.sizes.includes(sizeFilter)) return false;
     if (genderFilter && normalizeValue(p.gender) !== normalizeValue(genderFilter)) return false;
     if (collectionFilter && normalizeValue(p.collection) !== normalizeValue(collectionFilter)) return false;
@@ -535,7 +538,7 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
                   <span className="font-body text-xs text-[var(--color-dark-muted)] w-20 flex-shrink-0 pt-0.5">Размеры:</span>
                   <div className="flex flex-wrap gap-1.5">
                     {product.sizes.map((s) => (
-                      <span key={s} className="px-2.5 py-1 rounded-full bg-[var(--color-blue)]/20 font-body text-xs text-[var(--color-dark)]">
+                      <span key={s} className="px-2.5 py-1 rounded-full bg-[var(--color-blue)]/20 font-body text-xs text-[var(--color-dark)] border border-[var(--color-blue)]/30">
                         {s}
                       </span>
                     ))}
