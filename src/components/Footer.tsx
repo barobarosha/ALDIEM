@@ -127,25 +127,25 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-6 mb-6">
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-center">
             <a
-              href="/ALDIEM/privacy.html"
+              href="/privacy.html"
               className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
             >
               Политика конфиденциальности
             </a>
             <a
-              href="/ALDIEM/offer.html"
+              href="/offer.html"
               className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
             >
               Публичная оферта
             </a>
             <a
-              href="/ALDIEM/consent.html"
+              href="/consent.html"
               className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
             >
               Согласие на обработку данных
             </a>
             <a
-              href="/ALDIEM/delivery-return.html"
+              href="/delivery-return.html"
               className="font-body text-xs text-[var(--color-gray)] hover:text-white transition-colors"
             >
               Доставка и возврат
