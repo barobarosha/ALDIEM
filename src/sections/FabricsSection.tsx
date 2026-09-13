@@ -138,7 +138,7 @@ export default function FabricsSection() {
           <div className="inline-flex items-center gap-3 px-6 py-3 bg-white rounded-full shadow-[0_2px_12px_rgba(202,135,144,0.15)]">
             <div className="w-2 h-2 rounded-full bg-[var(--color-pink)] animate-pulse" />
             <p className="font-body text-sm text-[var(--color-dark)]">
-              Более 20 тканей в наличии — выберите и мы сшьём пижаму для вас
+              Более 50 тканей в наличии — выберите и мы сшьём пижаму для вас
             </p>
           </div>
         </div>
