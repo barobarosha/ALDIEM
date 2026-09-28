@@ -251,64 +251,61 @@ export default function CatalogSection() {
           </div>
         </div>
 
-        {/* ФИЛЬТРЫ КАТЕГОРИЙ */}
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-4">
-          <div className="flex flex-wrap items-center justify-center gap-1">
-            {filters.map((f) => (
-              <button
-                key={f.key}
-                onClick={() => setActiveFilter(f.key)}
-                className={`relative px-4 py-2 font-body text-sm transition-all duration-300 ${
-                  activeFilter === f.key
-                    ? 'text-white font-semibold'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
-                {f.label}
-                {activeFilter === f.key && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-white rounded-full" />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* РАСШИРЕННЫЕ ФИЛЬТРЫ */}
+        {/* ФИЛЬТРЫ НА СТЕКЛЯННОЙ ПОДЛОЖКЕ */}
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            <FilterSelect
-              label="Размер"
-              value={sizeFilter}
-              onChange={setSizeFilter}
-              options={sizeOptions}
-            />
-            <FilterSelect
-              label="Пол"
-              value={genderFilter}
-              onChange={setGenderFilter}
-              options={genderOptions}
-            />
-            <FilterSelect
-              label="Коллекция"
-              value={collectionFilter}
-              onChange={setCollectionFilter}
-              options={collectionOptions}
-            />
-            <FilterSelect
-              label="Ткань"
-              value={fabricFilter}
-              onChange={setFabricFilter}
-              options={fabricOptions}
-            />
-            {hasAdvancedFilters && (
-              <button
-                onClick={resetAdvancedFilters}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 font-body text-xs text-white hover:bg-white/20 transition-all"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                Сбросить
-              </button>
-            )}
+          <div className="max-w-3xl mx-auto rounded-[24px] bg-white/15 backdrop-blur-md border border-white/25 shadow-[0_8px_32px_rgba(0,0,0,0.15)] p-3 sm:p-5">
+            <div className="flex flex-wrap items-center justify-center gap-1">              {filters.map((f) => (
+                <button
+                  key={f.key}
+                  onClick={() => setActiveFilter(f.key)}
+                  className={`relative px-4 py-2 font-body text-sm transition-all duration-300 ${
+                    activeFilter === f.key
+                      ? 'text-white font-semibold'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  {f.label}
+                  {activeFilter === f.key && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-white rounded-full" />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-3 pt-3 border-t border-white/20">              <FilterSelect
+                label="Размер"
+                value={sizeFilter}
+                onChange={setSizeFilter}
+                options={sizeOptions}
+              />
+              <FilterSelect
+                label="Пол"
+                value={genderFilter}
+                onChange={setGenderFilter}
+                options={genderOptions}
+              />
+              <FilterSelect
+                label="Коллекция"
+                value={collectionFilter}
+                onChange={setCollectionFilter}
+                options={collectionOptions}
+              />
+              <FilterSelect
+                label="Ткань"
+                value={fabricFilter}
+                onChange={setFabricFilter}
+                options={fabricOptions}
+              />
+              {hasAdvancedFilters && (
+                <button
+                  onClick={resetAdvancedFilters}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 font-body text-xs text-white hover:bg-white/20 transition-all"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Сбросить
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -443,7 +440,7 @@ function FilterSelect({
         className={`appearance-none pl-4 pr-8 py-2 rounded-full font-body text-xs sm:text-sm border backdrop-blur-sm cursor-pointer transition-all focus:outline-none ${
           value
             ? 'bg-white text-[var(--color-dark)] border-white font-medium'
-            : 'bg-white/10 text-white/90 border-white/30 hover:bg-white/20'
+            : 'bg-white/25 text-white border-white/40 hover:bg-white/35'
         }`}
       >
         <option value="" className="text-[var(--color-dark)]">{label}: все</option>

@@ -55,7 +55,7 @@ export default function HeroSection() {
           <span className="text-white/90">для всей семьи</span>
         </h1>
         <p className="font-body text-[clamp(1rem,2.5vw,1.25rem)] text-white/90 max-w-[600px] mb-8 drop-shadow-md">
-          Каждая пижама — ручная работа, сделана с любовью нашими швейями
+          Каждая пижама — ручная работа, сделана с любовью нашими швеями
         </p>
         <a
           href="#catalog"
